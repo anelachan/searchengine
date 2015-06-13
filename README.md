@@ -25,7 +25,7 @@ pandas
 The main object for querying is SearchEngine. It should be called as follows:
 
 ```python
-s = SearchEngine(options, parse_options)
+>>> s = SearchEngine(options, parse_options)
 ```
 
 Querying is called with via the method query(query_string, num_of_results).
@@ -101,8 +101,8 @@ The SearchEngine can be evaluated with IREvaluator. This is instantiated with IR
 
 ```python
 # create an IREvaluator object passing a search engine object, with k = 10
-s = SearchEngine()
-e = IREvaluator(s,'qrels.february','06.topics.851-900.txt',10)
+>>> s = SearchEngine()
+>>> e = IREvaluator(s,'qrels.february','06.topics.851-900.txt',10)
 ```
 
 The IREvaluator object has methods and attributes for easy inspection:
