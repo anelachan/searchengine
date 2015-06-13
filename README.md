@@ -1,10 +1,10 @@
 # About
 
-This software forms an information retrieval engine and was based on the task of finding web documents from the 2006 TREC blog track collection. Additional modules are included to evaluate the IR engine and to perform pivoted document length normalization (http://dspace.library.cornell.edu/bitstream/1813/7217/1/95-1560.pdf).
+This software forms an information retrieval engine and was based on the task of finding web documents from the 2006 TREC blog track collection. Additional modules are included to evaluate the IR engine and to perform pivoted document length normalization (see Singhal et al. 1996).
 
 The IR engine follows the vector space model and uses log TF*IDF weights.
 
-# Corpus
+## Corpus
 
 The corpus is NOT included with this code, but the 2006 TREC blog track test collection can be acquired here: http://ir.dcs.gla.ac.uk/test_collections/blogs06info.html. However, the search engine should still work on any corpus where each document is stored in a single text file and all of these are stored in a directory called corpus/.
 
@@ -33,7 +33,7 @@ Querying is called with via the method query(query_string, num_of_results).
 Example of instantiating and querying:
 
 ```python
-# create an object for a sample of 1500 documents, with otherwise default options and default parse options
+# create an object for a sample of 1500 documents, with otherwise defaults
 >>> s = SearchEngine({'docs':1500}) 
 
 # get ranked list of 5 docs	
@@ -51,13 +51,21 @@ Example of instantiating and querying:
 Search Engine comes with the following options but if not options are specified will best set to defaults. The options should be passed as a dictionary object with the following optional keys and values:
 
 * 'corpus_dir' - The name of the directory where the corpus is stored, each as a single text file ending in .txt. Default is 'corpus/'.
+
 * 'sample' - True or False. Whether to run on entire collection or not - if running on entire collection, choose False. Default is True.
+
 * 'docs' - Integer. The number of docs to use in a sample. Will be ignored if 'sample' is False. Default is 200.
+
 * 'normalize' - True or False. Whether to normalize the weights by document length or not. Default is False.
+
 * 'biwords' - True or False. Whether to index biwords or not. Default is False.
+
 * 'pivot' - True or False. If True, actual pivot parameters must be specified BY HAND as calculated SEPARATELY in PivotFinder. Default is False.
+
 * 'pivot_factor' - Float. The pivot factor for pivoted document length normalization, calculated in PivotFinder (see below). Defaults to 37.48, the pivot calculated for the whole collection with plain vanilla options.
+
 * 'slope' - Float. The slope of the P(relevant) line calculated in PivotFinder (see below). Defaults to .0016248, the slope calculated for the whole collection with plain vanilla options.
+
 * 'english_only' - True or False. Whether or not to index only English documents as determined by stopwords-based language detection. Defaults to False.
 
 ### DocReader
@@ -78,9 +86,13 @@ Example:
 You will not need to call DocReader to query or evaluate the search engine but the parse options can be passed as the second options object to SearchEngine. If not specified the parse options will become defaults. The parse options should be passed as a dictionary with the following optional keys and values:
 
 * 'lowercase' - True or False. Whether to fold all words to lowercase. Default is True.
+
 * 'tokenize' - 'no_digits', 'symbols' or 'no_symbols'. 'no_digits' has alphabetic characters only. 'symbols' includes apostrophes and hyphens as well as digits. 'no_symbols' includes alphabetic and digit word chapters but not apostrophes or hyphens. Default is 'no_digits'.
+
 * 'stopwords' - True or False. Whether to INCLUDE stopwords - True means stopwords included, False means stopwords removed. Default is True.
+
 * 'stemming' - None, 'porter', 'lancaster' or 'snowball'. Which stemmer to use, or no stemmer as None. Default is None.
+
 * 'lemmatize' - True or False. Whether to lemmatize. Cannot be used in conjunction with stemming. Default is False.
 
 ### IREvaluator
