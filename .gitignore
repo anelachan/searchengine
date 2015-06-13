@@ -1,3 +1,4 @@
 blogs/
 corpus/
 .DS_Store
+*.pyc
