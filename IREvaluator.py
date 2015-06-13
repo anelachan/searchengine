@@ -1,4 +1,5 @@
 import re
+import random
 from SearchEngine import SearchEngine
 from SearchEngine import pd
 
@@ -38,6 +39,7 @@ class IREvaluator(object):
     self.metrics = {} # query_id: { metric_name: score }
     self.df = None
     self.averages = None
+    self.missing = missing
 
     self.evaluate()
 

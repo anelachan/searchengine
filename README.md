@@ -8,7 +8,7 @@ The IR engine follows the vector space model and uses log TF*IDF weights.
 
 The corpus is NOT included with this code, but the 2006 TREC blog track test collection can be acquired here: http://ir.dcs.gla.ac.uk/test_collections/blogs06info.html. However, the search engine should still work on any corpus where each document is stored in a single text file and all of these are stored in a directory called corpus/.
 
-# Dependencies
+## Dependencies
 
 Python 2.7.6
 
@@ -18,13 +18,9 @@ numpy
 scipy
 pandas
 
-# Memory Requirements
- 
-This system may use up to 1.5 GB of memory.
+## Usage
 
-# Usage
-
-## SearchEngine
+### SearchEngine
 
 The main object for querying is SearchEngine. It should be called as follows:
 
@@ -50,29 +46,21 @@ Example of instantiating and querying:
 748   21.452589  BLOG06-20060221-017-0005368642
 ```
 
-### Options
+##### Options
 
 Search Engine comes with the following options but if not options are specified will best set to defaults. The options should be passed as a dictionary object with the following optional keys and values:
 
-'corpus_dir' - The name of the directory where the corpus is stored, each as a single text file ending in .txt. Default is 'corpus/'.
+* 'corpus_dir' - The name of the directory where the corpus is stored, each as a single text file ending in .txt. Default is 'corpus/'.
+* 'sample' - True or False. Whether to run on entire collection or not - if running on entire collection, choose False. Default is True.
+* 'docs' - Integer. The number of docs to use in a sample. Will be ignored if 'sample' is False. Default is 200.
+* 'normalize' - True or False. Whether to normalize the weights by document length or not. Default is False.
+* 'biwords' - True or False. Whether to index biwords or not. Default is False.
+* 'pivot' - True or False. If True, actual pivot parameters must be specified BY HAND as calculated SEPARATELY in PivotFinder. Default is False.
+* 'pivot_factor' - Float. The pivot factor for pivoted document length normalization, calculated in PivotFinder (see below). Defaults to 37.48, the pivot calculated for the whole collection with plain vanilla options.
+* 'slope' - Float. The slope of the P(relevant) line calculated in PivotFinder (see below). Defaults to .0016248, the slope calculated for the whole collection with plain vanilla options.
+* 'english_only' - True or False. Whether or not to index only English documents as determined by stopwords-based language detection. Defaults to False.
 
-'sample' - True or False. Whether to run on entire collection or not - if running on entire collection, choose False. Default is True.
-
-'docs' - Integer. The number of docs to use in a sample. Will be ignored if 'sample' is False. Default is 200.
-
-'normalize' - True or False. Whether to normalize the weights by document length or not. Default is False.
-
-'biwords' - True or False. Whether to index biwords or not. Default is False.
-
-'pivot' - True or False. If True, actual pivot parameters must be specified BY HAND as calculated SEPARATELY in PivotFinder. Default is False.
-
-'pivot_factor' - Float. The pivot factor for pivoted document length normalization, calculated in PivotFinder (see below). Defaults to 37.48, the pivot calculated for the whole collection with plain vanilla options.
-
-'slope' - Float. The slope of the P(relevant) line calculated in PivotFinder (see below). Defaults to .0016248, the slope calculated for the whole collection with plain vanilla options.
-
-'english_only' - True or False. Whether or not to index only English documents as determined by stopwords-based language detection. Defaults to False.
-
-## DocReader
+### DocReader
 
 Tokenization is managed through DocReader, which is automatically instantiated through SearchEngine. Tokenizing takes the format: doc = DocReader(raw_document,parse_options). The tokens can be retrieved through the words() method. The strings are all encoded as unicode. 
 
@@ -85,21 +73,17 @@ Example:
 [u'here', u'is', u'a', u'raw', u'string']
 ```
 
-### Options
+##### Options
 
 You will not need to call DocReader to query or evaluate the search engine but the parse options can be passed as the second options object to SearchEngine. If not specified the parse options will become defaults. The parse options should be passed as a dictionary with the following optional keys and values:
 
-'lowercase' - True or False. Whether to fold all words to lowercase. Default is True.
+* 'lowercase' - True or False. Whether to fold all words to lowercase. Default is True.
+* 'tokenize' - 'no_digits', 'symbols' or 'no_symbols'. 'no_digits' has alphabetic characters only. 'symbols' includes apostrophes and hyphens as well as digits. 'no_symbols' includes alphabetic and digit word chapters but not apostrophes or hyphens. Default is 'no_digits'.
+* 'stopwords' - True or False. Whether to INCLUDE stopwords - True means stopwords included, False means stopwords removed. Default is True.
+* 'stemming' - None, 'porter', 'lancaster' or 'snowball'. Which stemmer to use, or no stemmer as None. Default is None.
+* 'lemmatize' - True or False. Whether to lemmatize. Cannot be used in conjunction with stemming. Default is False.
 
-'tokenize' - 'no_digits', 'symbols' or 'no_symbols'. 'no_digits' has alphabetic characters only. 'symbols' includes apostrophes and hyphens as well as digits. 'no_symbols' includes alphabetic and digit word chapters but not apostrophes or hyphens. Default is 'no_digits'.
- 
-'stopwords' - True or False. Whether to INCLUDE stopwords - True means stopwords included, False means stopwords removed. Default is True.
-
-'stemming' - None, 'porter', 'lancaster' or 'snowball'. Which stemmer to use, or no stemmer as None. Default is None.
-
-'lemmatize' - True or False. Whether to lemmatize. Cannot be used in conjunction with stemming. Default is False.
-
-## IREvaluator
+### IREvaluator
 
 The SearchEngine can be evaluated with IREvaluator. This is instantiated with IREvaluator(search_engine_object,QRELS_filename,query_filename,num_documents_k). Only text files in the format given for this project will parse correctly. Example:
 
@@ -166,9 +150,9 @@ New P@5: 0.4
 9   0.475000  0.471608
 ```
 
-## PivotFinder
+### PivotFinder
 
-This object can be used to calculate pivot factors. This must be done separately based on a normalized SearchEngine object. It must be instantiated as PivotFinder(search_engine_object,number_to_retrieve,number_of_bins). Example:
+This object can be used to calculate pivot factors. This must be done SEPARATELY based on a normalized SearchEngine object. It must be instantiated as PivotFinder(search_engine_object,number_to_retrieve,number_of_bins). Example:
 
 ```python
 # after creating a normalized SearchEngine, instantiate a PivotFinder object requiring 100 docs to be retrieved, doc lengths go into 10 bins of equal length
@@ -182,6 +166,6 @@ This object can be used to calculate pivot factors. This must be done separately
 -47.047416916979387 
 ```
 
-# For IR strategy testing
+### A note on IR strategy testing
 
 While this system should run end-to-end for querying, if you are going to test IR strategies, some of the data should be stored on disk, i.e. using the pickle module, to avoid redundant I/O and parsing. (Pickled files were removed for clarity.)
