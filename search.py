@@ -107,7 +107,7 @@ class SearchEngine(object):
 
             # deal with any blank docs
             else:
-                    self.blank_docs.append(id_num)
+                self.blank_docs.append(id_num)
             id_num += 1
 
         if not sample:

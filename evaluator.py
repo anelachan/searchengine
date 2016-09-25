@@ -17,7 +17,6 @@ class Evaluator(object):
         topics = open(topic_file).read()
         queries = re.findall(r'<num> Number: (\d+)\n\n<title> '
                              '([\"\w+\s+\d+\??]+)\s\s<desc>', topics)
-        print queries
         self.query_dict = dict([(query[0].rstrip(), query[1])
                                 for query in queries])
         self.query_dict_inv = dict([(val, key) for (key, val)
